@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Blank HTML5</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<style>
+ .navbar {
+  height: 70px;
+}
+.navbar-default{
+  transition:500ms ease;
+  background:transparent ;
+  
+  color: black;
+  }
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 15%;
+  height: 15%;
+}
+.navbar > a{
+  margin-right: 10px;
+  padding-bottom:10px;
+  padding-top: 10px;
+  padding-left:30px;
+  padding-right:30px;
+  color: black;
+}
+
+a{
+ border:2px solid black;
+ border-radius: 25px;  
+}
+
+a:hover{
+  background-color: black;
+  color: white;  
+  margin-right: 10px;
+  padding-bottom:12px;
+  padding-top: 12px;
+  padding-left:30px;
+  padding-right:30px;
+}
+.grab {cursor: -webkit-grab; cursor: grab;}
+.grabbing {cursor: -webkit-grabbing; cursor: grabbing;}
+.all-scroll {cursor: all-scroll;}
+/* ---- reset ---- */ body{ margin:0; font:normal 75% Arial, Helvetica, sans-serif; } canvas{ display: block; vertical-align: bottom; } /* ---- particles.js container ---- */ #particles-js{ position:absolute; width: 100%; height: 100%; z-index: -1; background-color: #ffffff; background-image: url(""); background-repeat: no-repeat; background-size: cover; background-position: 50% 50%; } /* ---- stats.js ---- */ 
+</style>
+    </head>
+    <body>
+      <div id="particles-js"></div>
+      <nav class="navbar navbar-default navbar-fixed-top">
+        
+          <a href="Welcome.html" class="mr-auto">Home</a>
+          <a href="#">API</a>
+          <a href="#">Build</a>
+          <a href="#">Models</a>
+          <a href="#">Profile</a>
+  
+      </nav>
+        <form id="regForm" action="">
+
+            <h3 style="color:black">Build Your Model</h3><br>
+            
+            <!-- One "tab" for each step in the form: -->
+            <div class="tab border">
+                <label for="modelName">Select Your File (must be CSV): </label>
+                <input type="file" name="filename" id="filename">
+                <br><br><br>
+                <label for="modelName">Model Name: </label>
+              <p><input id="modelName" placeholder="Model name..." oninput="this.className = ''"></p>
+            </div>
+            
+            <div class="tab border" id="columnList">
+                <div id="columnContainer" class="editor-container">
+                    <br>
+                    <div class="d-flex">
+                      <ul id="myColumns" class="connectedSortable list-inline mx-auto justify-content-center">
+                          <h2>My Columns</h2>
+                          <p class="font-italic">Drag and drop the appropriate columns to the Input Variable and Output Variable sections respectively.</p>
+                      </ul>
+                    </div>
+                <br>
+                <hr>
+                <br>
+                    <div class="d-flex">
+                      <ul id="mySortable" class="connectedSortable list-inline mx-auto justify-content-center">
+                          <h2>Input Variable</h2> <br>
+                      </ul>
+                    </div>
+                <br>
+                <hr>
+                <br>
+                    <div class="d-flex">
+                      <ul id="mySortableOutput" class="connectedSortable list-inline mx-auto justify-content-center">
+                          <h2>Output Variable</h2> <br>
+                      </ul>
+                    </div>
+                    <br>
+                </div>
+                <br>
+            </div>
+            
+            <div class="tab border">Visual Display:
+              <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+            </div> 
+            
+
+            <div class="tab border">Partition:
+              <label for="trainingPartition">Training Partition</label>
+              <p><input id="trainingPartition" placeholder="training partition" oninput="this.className = ''"></p>
+              <label for="testPartition">Test Partition</label>
+              <p><input id="testPartition" placeholder="test partition" oninput="this.className = ''"></p>
+            </div> 
+            
+            <div class="tab border">
+              <h3 id="usersModelName"></h3>
+              <br>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Statistic</th>
+                    <th scope="col">Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Intercept</th>
+                    <td id="intercept"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Slope</th>
+                    <td id="slope"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">R-Squared</th>
+                    <td id="r-squared"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">MAE</th>
+                    <td id="mae"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">MAPE</th>
+                    <td id="mape"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">MSE</th>
+                    <td id="mse"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">RMSE</th>
+                    <td id="rmse"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div> 
+            
+            <br>
+            <div style="overflow:auto;">
+              <div style="float:right;">
+                <button type="button" id="prevBtn" class="btn btn-secondary btn-sm" onclick="nextPrev(-1)">Previous</button>
+                <button type="button" id="nextBtn" class="btn btn-primary btn-sm" onclick="nextPrev(1)">Next</button>
+                <!-- <button type="submit">Analyze</button> -->
+              </div>
+            </div>
+            
+            <!-- Circles which indicates the steps of the form: -->
+            <div style="text-align:center;margin-top:40px;">
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+            </div>
+            
+            </form>
+    
+    <script src="http://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script> <!-- stats.js lib --> <script src="http://threejs.org/examples/js/libs/stats.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+
+
+  
+particlesJS("particles-js", {"particles":{"number":{"value":80,"density":{"enable":true,"value_area":800}},"color":{"value":"#000000"},"shape":{"type":"circle","stroke":{"width":0,"color":"#000000"},"polygon":{"nb_sides":5},"image":{"src":"img/github.svg","width":100,"height":100}},"opacity":{"value":0.5,"random":false,"anim":{"enable":false,"speed":1,"opacity_min":0.1,"sync":false}},"size":{"value":0,"random":true,"anim":{"enable":false,"speed":40,"size_min":0.1,"sync":false}},"line_linked":{"enable":true,"distance":150,"color":"#000000","opacity":0.4,"width":1},"move":{"enable":true,"speed":1.5,"direction":"none","random":false,"straight":false,"out_mode":"out","bounce":false,"attract":{"enable":false,"rotateX":1281.3838946061746,"rotateY":1601.7298682577182}}},"interactivity":{"detect_on":"canvas","events":{"onhover":{"enable":true,"mode":"grab"},"onclick":{"enable":true,"mode":"repulse"},"resize":true},"modes":{"grab":{"distance":133.84057559559062,"line_linked":{"opacity":1}},"bubble":{"distance":400,"size":40,"duration":2,"opacity":8,"speed":3},"repulse":{"distance":200,"duration":0.4},"push":{"particles_nb":4},"remove":{"particles_nb":2}}},"retina_detect":false});var count_particles, stats, update; stats = new Stats; stats.setMode(0); stats.domElement.style = 'none'; count_particles = document.querySelector('.js-count-particles'); update = function() { stats.begin(); stats.end(); if (window.pJSDom[0].pJS.particles && window.pJSDom[0].pJS.particles.array) { count_particles.innerText = window.pJSDom[0].pJS.particles.array.length; } requestAnimationFrame(update); }; requestAnimationFrame(update);;
+
+
+   /* ////////////////////////
+
+   Section 1: Controls the flow of the wizard
+
+  /////////////////////////*/
+  
+var currentTab = 0; // Current tab is set to be the first tab (0)
+showTab(currentTab); // Display the current tab
+
+function showTab(n) {
+  // This function will display the specified tab of the form ...
+  var x = document.getElementsByClassName("tab");
+  x[n].style.display = "block";
+  // ... and fix the Previous/Next buttons:
+  if (n == 0) {
+    document.getElementById("prevBtn").style.display = "none";
+  } else {
+    document.getElementById("prevBtn").style.display = "inline";
+  }
+  if (n == (x.length - 1)) {
+    document.getElementById("nextBtn").innerHTML = "Submit";
+  } else if (n == (x.length - 2)) {
+    document.getElementById("nextBtn").innerHTML = "Analyze";
+  } else {
+    document.getElementById("nextBtn").innerHTML = "Next";
+  }
+  // ... and run a function that displays the correct step indicator:
+  fixStepIndicator(n)
+}
+
+function nextPrev(n) {
+  // This function will figure out which tab to display
+  var x = document.getElementsByClassName("tab");
+  // Exit the function if any field in the current tab is invalid:
+  if (n == 1 && !validateForm()) return false;
+  // Hide the current tab:
+  x[currentTab].style.display = "none";
+  // Increase or decrease the current tab by 1:
+  currentTab = currentTab + n;
+  // if you have reached the end of the form... :
+  if (currentTab >= x.length) {
+    //...the form gets submitted:
+    document.getElementById("regForm").submit();
+    return false;
+  }
+  // Otherwise, display the correct tab:
+  showTab(currentTab);
+}
+
+function validateForm() {
+  // This function deals with validation of the form fields
+  var x, y, i, valid = true;
+  x = document.getElementsByClassName("tab");
+  y = x[currentTab].getElementsByTagName("input");
+  // A loop that checks every input field in the current tab:
+  for (i = 0; i < y.length; i++) {
+    // If a field is empty...
+    if (y[i].value == "") {
+      // add an "invalid" class to the field:
+      y[i].className += " invalid";
+      // and set the current valid status to false:
+      valid = false;
+    }
+  }
+  // If the valid status is true, mark the step as finished and valid:
+  if (valid) {
+    document.getElementsByClassName("step")[currentTab].className += " finish";
+  }
+  return valid; // return the valid status
+}
+
+function fixStepIndicator(n) {
+  // This function removes the "active" class of all steps...
+  var i, x = document.getElementsByClassName("step");
+  for (i = 0; i < x.length; i++) {
+    x[i].className = x[i].className.replace(" active", "");
+  }
+  //... and adds the "active" class to the current step:
+  x[n].className += " active";
+}
+
+   /* ////////////////////////
+
+   Section 2: Allows the column selection portion of the wizard to be sortable
+
+  /////////////////////////*/
+
+
+$(function() {
+    $( ".connectedSortable" ).sortable({
+        items : ':not(h2)',
+        connectWith: ".connectedSortable"
+    }).disableSelection();
+});
+
+   /* ////////////////////////
+
+   Section 3: Finds the columns in the file and creates new <li>'s for Section 3 to manipulate
+
+  /////////////////////////*/
+$(document).ready(function() {
+$("#filename").change(function(e) {
+var ext = $("input#filename").val().split(".").pop().toLowerCase();
+if($.inArray(ext, ["csv"]) == -1) {
+alert('Upload CSV');
+return false;
+} 
+columnList = [];
+if (e.target.files != undefined) {
+var reader = new FileReader();
+reader.onload = function(e) {
+    var lines = e.target.result.split('\r\n');
+    for (i = 0; i < lines.length; ++i) {
+      if (i == 0) {
+        //$('div').append('<br>' + lines[i]);
+        allColumns = lines[i].split(',');
+        console.log(columnList)
+        for (i = 0; i < allColumns.length; i++) {
+              var thisColumn = allColumns[i];
+              var thisColumnId = '#' + thisColumn;
+              console.log(thisColumn);
+              var x = document.createElement("LI");
+              var t = document.createTextNode(thisColumn);
+              x.id = thisColumn;
+              console.log(thisColumnId);
+              $(thisColumnId).addClass("all-scroll");
+              var myClass = $(thisColumnId).attr("class");
+              console.log(myClass);
+              x.appendChild(t);
+              document.getElementById("myColumns").appendChild(x);
+        }
+      } else {
+
+      }
+    }
+};
+reader.readAsText(e.target.files.item(0));
+}
+return false;
+});
+
+});
+
+
+  /* ////////////////////////
+
+   Section 4: Send the post request to the EZML API
+
+  /////////////////////////*/
+  /* ////////////////////////
+  Section 4A: Create the post request form*/
+  document.getElementById("nextBtn").addEventListener("click", function(event) {
+    if (currentTab == 4) {
+    console.log('Post reqeust event fired');
+    var formdata = new FormData();
+    formdata.append("file", filename.files[0]);
+    //////////////////////////
+    /* ////////////////////////
+    Section 4B: Outputs the value of the new sorted list as an array and gathers user input from form*/
+    var inputVariable = $("#mySortable").sortable("toArray")[1];
+    var outputVariable = $("#mySortableOutput").sortable("toArray")[1];
+    var trainingPartition = $("#trainingPartition").val();
+    var testPartition = $("#testPartition").val();
+    //////////////////////////
+    /* ////////////////////////
+    Section 4C: Append applicable values to the form and make the post request*/
+    formdata.append("inputVariable", inputVariable);
+    formdata.append("outputVariable", outputVariable);
+    formdata.append("trainingPartition", trainingPartition);
+    formdata.append("testPartition", testPartition);
+
+    var settings = {
+      "url": "http://ezml.herokuapp.com/simpleLinearRegression",
+      "method": "POST",
+      "timeout": 0,
+      "processData": false,
+      "mimeType": "multipart/form-data",
+      "contentType": false,
+      "data": formdata
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      var respObj = JSON.parse(response);
+      console.log(response);
+      console.log(respObj.Intercept);
+      $('#intercept').text(respObj.Intercept);
+      $('#slope').text(respObj.Slope);
+      $('#mae').text(respObj.MAE);
+      $('#mape').text(respObj.MAPE);
+      $('#mse').text(respObj.MSE);
+      $('#rmse').text(respObj.RMSE);
+      $('#r-squared').text(respObj.RSquared);
+
+    });
+
+    var modelName = $("#modelName").val();
+    $("#usersModelName").text(modelName);
+
+
+  };
+});
+
+dataPointsFromCSV = [];
+  /* ////////////////////////
+
+   Section 5: Display the chart
+
+  /////////////////////////*/
+  document.getElementById("nextBtn").addEventListener("click", function(event) {
+  if (currentTab == 2) {
+  console.log('tab3 function fired');
+  $("#filename").change(function(e) {
+  var ext = $("input#filename").val().split(".").pop().toLowerCase();
+  if($.inArray(ext, ["csv"]) == -1) {
+  alert('Upload CSV');
+  return false;
+  } 
+  columnList = [];
+  if (e.target.files != undefined) {
+  var reader = new FileReader();
+  reader.onload = function(e) {
+      var lines = e.target.result.split('\r\n');
+      var calls = 0;
+      console.log(lines.length);
+      for (i = 0; i < lines.length; ++i) {
+        if (i == 0) {
+          //$('div').append('<br>' + lines[i]);
+          allColumns = lines[i].split(',');
+          console.log(columnList)
+          var columnsToGrab = []
+          console.log('input');
+          console.log($("#mySortable").sortable("toArray")[1]);
+          console.log('output');
+          console.log($("#mySortableOutput").sortable("toArray")[1]);
+          for (i = 0; i < allColumns.length; i++) {
+                if ($("#mySortable").sortable("toArray")[1] == allColumns[i]) {
+                  console.log('appending this columnsToGrab column');
+                  console.log(i);
+                  columnsToGrab.push({'inputVariable':i});
+                } else if ($("#mySortableOutput").sortable("toArray")[1] == allColumns[i]) {
+                  console.log('appending this columnsToGrab column');
+                  console.log(i);
+                  columnsToGrab.push({'outputVariable':i});
+                }
+                
+          }
+        } else {
+          AllLineElements = lines[i].split(',')
+          console.log('All line elements after first row');
+          console.log(AllLineElements);
+          
+          console.log(columnsToGrab);
+          for (i2 = 0; i2 < columnsToGrab.length; i2++) {
+            for(var key in columnsToGrab[i2]) {
+            console.log('logging column k');
+            console.log(key);
+              if (key == 'inputVariable') {
+                console.log(columnsToGrab);
+                console.log(columnsToGrab[i2].inputVariable);
+                xColumn = columnsToGrab[i2].inputVariable;
+              } else if (key == 'outputVariable') {
+                console.log(columnsToGrab.outputVariable);
+                yColumn = columnsToGrab[i2].outputVariable;
+              }
+            }
+
+          }
+          console.log(AllLineElements[xColumn]);
+          console.log(AllLineElements[yColumn]);
+          dataPointsFromCSV.push({x:parseFloat(AllLineElements[xColumn]), y:parseFloat(AllLineElements[yColumn])});
+          console.log(dataPointsFromCSV);
+          calls += 1;
+          if (calls > 2820) { debugger; }
+         
+        }
+      }
+      console.log('chart render has fired');
+  var chart = new CanvasJS.Chart("chartContainer", {
+    animationEnabled: true,
+	  zoomEnabled: true,
+    theme: "light2",
+    title:{
+      text: $("#modelName").val()
+    },
+    axisX: {
+		  title:$("#mySortable").sortable("toArray")[1]
+	  },
+    axisY:{
+      title: $("#mySortableOutput").sortable("toArray")[1]
+    },
+    data: [{        
+      type: "scatter",
+          indexLabelFontSize: 16,
+      dataPoints: dataPointsFromCSV
+    }]
+  });
+  chart.render();
+  };
+  console.log(dataPointsFromCSV);
+  reader.readAsText(e.target.files.item(0));
+  }
+ 
+
+  });
+
+  $("#filename").trigger('change');
+  
+
+  }
+  });
+
+
+
+</script>
+    </body>
+</html>
+
+
