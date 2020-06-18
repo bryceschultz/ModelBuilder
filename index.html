@@ -2,13 +2,13 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Model Builder</title>
+        <title>Blank HTML5</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href="style.css">
         <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<link rel="icon" href="MLEZ.png">
+        <link rel="icon" href="MLEZ.png">
 <style>
  .navbar {
   height: 70px;
@@ -34,6 +34,13 @@
   padding-left:30px;
   padding-right:30px;
   color: black;
+}
+
+#load{
+    height:50%;
+    position:fixed;
+    z-index:9999;
+    background:url("ajax-loader.gif") no-repeat center center rgba(0,0,0,0)
 }
 
 a{
@@ -123,6 +130,8 @@ a:hover{
             </div> 
             
             <div class="tab border">
+              <div id="load"></div>
+              <div id="postResults">
               <h3 id="usersModelName"></h3>
               <br>
               <table class="table">
@@ -163,6 +172,7 @@ a:hover{
                   </tr>
                 </tbody>
               </table>
+            </div>
             </div> 
             
             <br>
@@ -207,6 +217,7 @@ particlesJS("particles-js", {"particles":{"number":{"value":80,"density":{"enabl
   
 var currentTab = 0; // Current tab is set to be the first tab (0)
 showTab(currentTab); // Display the current tab
+
 
 function showTab(n) {
   // This function will display the specified tab of the form ...
@@ -380,6 +391,8 @@ return false;
       "data": formdata
     };
 
+    $('#postResults').hide();
+    $('#load').show();
     $.ajax(settings).done(function (response) {
       console.log(response);
       var respObj = JSON.parse(response);
@@ -392,8 +405,9 @@ return false;
       $('#mse').text(respObj.MSE);
       $('#rmse').text(respObj.RMSE);
       $('#r-squared').text(respObj.RSquared);
-
-    });
+      $('#load').hide();
+      $('#postResults').show();
+    } );
 
     var modelName = $("#modelName").val();
     $("#usersModelName").text(modelName);
@@ -426,7 +440,6 @@ dataPointsFromCSV = [];
       console.log(lines.length);
       for (i = 0; i < lines.length; ++i) {
         if (i == 0) {
-          //$('div').append('<br>' + lines[i]);
           allColumns = lines[i].split(',');
           console.log(columnList)
           var columnsToGrab = []
@@ -516,5 +529,3 @@ dataPointsFromCSV = [];
 </script>
     </body>
 </html>
-
-
