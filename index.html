@@ -317,10 +317,10 @@ if($.inArray(ext, ["csv"]) == -1) {
 alert('Upload CSV');
 return false;
 } 
-columnList = [];
 if (e.target.files != undefined) {
 var reader = new FileReader();
 reader.onload = function(e) {
+	columnList = [];
     var lines = e.target.result.split('\r\n');
     for (i = 0; i < lines.length; ++i) {
       if (i == 0) {
