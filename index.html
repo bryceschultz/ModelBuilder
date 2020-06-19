@@ -325,6 +325,7 @@ reader.onload = function(e) {
     for (i = 0; i < lines.length; ++i) {
       if (i == 0) {
         //$('div').append('<br>' + lines[i]);
+	 allColumns = [];
         allColumns = lines[i].split(',');
         console.log(columnList)
         for (i = 0; i < allColumns.length; i++) {
