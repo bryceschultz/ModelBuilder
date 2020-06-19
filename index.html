@@ -416,7 +416,7 @@ return false;
   };
 });
 
-dataPointsFromCSV = [];
+
   /* ////////////////////////
 
    Section 5: Display the chart
@@ -424,6 +424,7 @@ dataPointsFromCSV = [];
   /////////////////////////*/
   document.getElementById("nextBtn").addEventListener("click", function(event) {
   if (currentTab == 2) {
+	  dataPointsFromCSV = [];
   console.log('tab3 function fired');
   $("#filename").change(function(e) {
   var ext = $("input#filename").val().split(".").pop().toLowerCase();
