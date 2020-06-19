@@ -320,16 +320,16 @@ return false;
 if (e.target.files != undefined) {
 var reader = new FileReader();
 reader.onload = function(e) {
-	columnList = [];
     var lines = e.target.result.split('\r\n');
     for (i = 0; i < lines.length; ++i) {
+	    columnList = [];
       if (i == 0) {
         //$('div').append('<br>' + lines[i]);
         allColumns = lines[i].split(',');
+	      columnList.push(allColumns);
         console.log(columnList)
         for (i = 0; i < allColumns.length; i++) {
-              var thisColumn = allColumns[i];
-              var thisColumnId = '#' + thisColumn;
+              var thisColumn = columnList[i];
               console.log(thisColumn);
               var x = document.createElement("LI");
               var t = document.createTextNode(thisColumn);
