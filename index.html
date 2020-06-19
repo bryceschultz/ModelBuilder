@@ -332,6 +332,9 @@ reader.onload = function(e) {
               var thisColumn = allColumns[i];
               var thisColumnId = '#' + thisColumn;
               console.log(thisColumn);
+	      if( $(thisColumnId).length )  {
+		     // it exists
+	      } else {
               var x = document.createElement("LI");
               var t = document.createTextNode(thisColumn);
               x.id = thisColumn;
@@ -340,6 +343,7 @@ reader.onload = function(e) {
               console.log(myClass);
               x.appendChild(t);
               document.getElementById("myColumns").appendChild(x);
+	      }
         }
       } else {
 
