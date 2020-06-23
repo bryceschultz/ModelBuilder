@@ -587,7 +587,7 @@ function export_table_to_csv(html, filename) {
 
 document.getElementById("nextBtn").addEventListener("click", function (event) {
 	if (currentTab == 5) {
-		e.preventDefault();
+		event.preventDefault();
 		var html = document.querySelector("table").outerHTML;
 		export_table_to_csv(html, "table.csv");
         }
