@@ -577,7 +577,7 @@ document.getElementById("nextBtn").addEventListener("click", function (event) {
 	if (currentTab == 5) {
 		event.preventDefault();
 		var html = document.querySelector("table").outerHTML;
-		export_table_to_csv(html, "table.csv");
+		export_table_to_csv(html, $("#modelName").val() + ".csv");
         }
 });
        
