@@ -587,13 +587,14 @@ function export_table_to_csv(html, filename) {
 }
 
 
-document.getElementById("nextBtn").addEventListener("click", function (event) {
-	event.preventDefault();
-        if (currentTab == 5) {
+document.getElementById("nextBtn").submit(function(e){
+	if (currentTab == 5) {
 		var html = document.querySelector("table").outerHTML;
 		export_table_to_csv(html, "table.csv");
         }
+    return false;
 });
+       
 	
 document.getElementById("prevBtn").addEventListener("click", function (event) {
 	event.preventDefault();
