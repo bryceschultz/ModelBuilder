@@ -588,7 +588,7 @@ function export_table_to_csv(html, filename) {
 }
 
 
-document.getElementById("nextBtn").addEventListener("submit", function (event) {
+document.getElementById("regForm").addEventListener("submit", function (event) {
 	if (currentTab == 5) {
 		event.preventDefault();
 		var html = document.querySelector("table").outerHTML;
