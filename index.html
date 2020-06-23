@@ -330,7 +330,7 @@ reader.onload = function(e) {
         console.log(columnList)
         for (i = 0; i < allColumns.length; i++) {
               var thisColumn = allColumns[i];
-              var thisColumnId = '#' + thisColumn.replace(/\s/g, '');
+              var thisColumnId = '#' + thisColumn.replace(/\s/g, '').replace(':','').replace('(','').replace(')','');
               console.log(thisColumn);
 	      if( $(thisColumnId).length )  {
 		     // it exists
