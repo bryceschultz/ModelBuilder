@@ -588,13 +588,13 @@ function export_table_to_csv(html, filename) {
 }
 
 
-document.getElementById("regForm").addEventListener("submit", function (event) {
-	console.log('form submit has fired');
+document.getElementById("regForm").addEventListener("submit", function (event){
 	event.preventDefault();
+	console.log('form submit has fired');
 	var html = document.querySelector("table").outerHTML;
 	export_table_to_csv(html, "table.csv");
 });
-       
+	
 	
 document.getElementById("prevBtn").addEventListener("click", function (event) {
 	event.preventDefault();
