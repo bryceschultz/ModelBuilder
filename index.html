@@ -217,9 +217,7 @@ particlesJS("particles-js", {"particles":{"number":{"value":80,"density":{"enabl
 
 
    /* ////////////////////////
-
    Section 1: Controls the flow of the wizard
-
   /////////////////////////*/
   
 var currentTab = 0; // Current tab is set to be the first tab (0)
@@ -259,9 +257,6 @@ function nextPrev(n) {
   currentTab = currentTab + n;
   // if you have reached the end of the form... :
   if (currentTab >= x.length) {
-  //If the form gets submitted
-  document.getElementById("regForm").submit();
-  return false;
 
   }
   // Otherwise, display the correct tab:
@@ -301,9 +296,7 @@ function fixStepIndicator(n) {
 }
 
    /* ////////////////////////
-
    Section 2: Allows the column selection portion of the wizard to be sortable
-
   /////////////////////////*/
 
 
@@ -315,9 +308,7 @@ $(function() {
 });
 
    /* ////////////////////////
-
    Section 3: Finds the columns in the file and creates new <li>'s for Section 3 to manipulate
-
   /////////////////////////*/
 $(document).ready(function() {
 $("#filename").change(function(e) {
@@ -368,9 +359,7 @@ return false;
 
 
   /* ////////////////////////
-
    Section 4: Send the post request to the EZML API
-
   /////////////////////////*/
   /* ////////////////////////
   Section 4A: Create the post request form*/
@@ -431,9 +420,7 @@ return false;
 
 
   /* ////////////////////////
-
    Section 5: Display the chart
-
   /////////////////////////*/
   document.getElementById("nextBtn").addEventListener("click", function(event) {
   if (currentTab == 2) {
@@ -540,9 +527,7 @@ return false;
 
 
   /* ////////////////////////
-
    Section 5: Allow user to download the results of their model as a CSV
-
   /////////////////////////*/
 function download_csv(csv, filename) {
     var csvFile;
@@ -588,13 +573,14 @@ function export_table_to_csv(html, filename) {
 }
 
 
-document.getElementById("regForm").addEventListener("submit", function (event){
-	event.preventDefault();
-	console.log('form submit has fired');
-	var html = document.querySelector("table").outerHTML;
-	export_table_to_csv(html, "table.csv");
+document.getElementById("nextBtn").addEventListener("click", function (event) {
+	if (currentTab == 5) {
+		event.preventDefault();
+		var html = document.querySelector("table").outerHTML;
+		export_table_to_csv(html, "table.csv");
+        }
 });
-	
+       
 	
 document.getElementById("prevBtn").addEventListener("click", function (event) {
 	event.preventDefault();
