@@ -330,7 +330,7 @@ reader.onload = function(e) {
         console.log(columnList)
         for (i = 0; i < allColumns.length; i++) {
               var thisColumn = allColumns[i];
-              var thisColumnId = '#' + thisColumn;
+              var thisColumnId = '#' + thisColumn.replace(/\s/g, '');
               console.log(thisColumn);
 	      if( $(thisColumnId).length )  {
 		     // it exists
@@ -576,6 +576,7 @@ function export_table_to_csv(html, filename) {
 document.getElementById("nextBtn").addEventListener("click", function (event) {
 	if (currentTab == 5) {
 		event.preventDefault();
+		nextPrev(-1);
 		var html = document.querySelector("table").outerHTML;
 		export_table_to_csv(html, $("#modelName").val() + ".csv");
         }
